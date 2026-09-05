@@ -1,0 +1,56 @@
+# Publica o site no GitHub Pages. Não há etapa de build: a página é estática e
+# o engine já vem compilado em engine/ (veja tools/build-engine.sh).
+name: Deploy no GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Testar a lógica de xadrez
+        run: python tests/test_notation.py
+
+      - name: Instalar o Playwright
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Testar no navegador
+        run: python tests/test_browser.py
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

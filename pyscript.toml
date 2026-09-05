@@ -1,0 +1,15 @@
+# Arquivos copiados para o sistema de arquivos virtual do Pyodide antes de
+# `app/main.py` rodar. A lógica de xadrez (piece.py, table.py, coordinates.py)
+# é a mesma da versão desktop, sem alteração.
+[files]
+"app/main.py" = "main.py"
+"app/ui.py" = "ui.py"
+"app/uci.py" = "uci.py"
+"app/audio.py" = "audio.py"
+"app/chess/__init__.py" = "chess/__init__.py"
+"app/chess/notation.py" = "chess/notation.py"
+"app/chess/piece.py" = "chess/piece.py"
+"app/chess/table.py" = "chess/table.py"
+"app/chess/engine/__init__.py" = "chess/engine/__init__.py"
+"app/chess/engine/canvas.py" = "chess/engine/canvas.py"
+"app/chess/engine/coordinates.py" = "chess/engine/coordinates.py"

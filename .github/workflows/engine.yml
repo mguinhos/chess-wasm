@@ -1,0 +1,36 @@
+# Recompila o Stockfish para WebAssembly. Roda sob demanda: os artefatos ficam
+# versionados em engine/, então isso serve para conferir que o build continua
+# reproduzível e para baixar um binário novo depois de mexer no patch.
+name: Compilar o engine
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "tools/build-engine.sh"
+      - "tools/stockfish-wasm.patch"
+      - "tools/main_wasm.cpp"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 4.0.0
+
+      - name: Compilar
+        run: ./tools/build-engine.sh
+
+      - name: Conferir o engine compilado
+        run: node tools/bench-engine.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stockfish-wasm
+          path: |
+            engine/stockfish.js
+            engine/stockfish.wasm
+            engine/stockfish.data

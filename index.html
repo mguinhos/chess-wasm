@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xadrez em WASM</title>
+  <meta name="description" content="Jogo de xadrez escrito em Python rodando no navegador com PyScript, contra o Stockfish 17 compilado para WebAssembly.">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>♟️</text></svg>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://pyscript.net/releases/2025.8.1/core.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Xadrez em WASM</h1>
+      <p class="subtitle">Xadrez em Python no navegador contra o Stockfish 17 em WebAssembly.</p>
+
+      <div class="columns">
+        <div class="column board-column">
+          <div class="board">
+            <canvas id="board" width="800" height="800" aria-label="Tabuleiro de xadrez"></canvas>
+
+            <div id="overlay" class="board-overlay has-text-centered">
+              <p class="has-text-weight-semibold">Carregando o Python e o engine</p>
+              <p class="is-size-7 has-text-grey">São 7 MB na primeira vez, depois fica em cache.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="column is-one-quarter panel-column">
+          <p class="mb-4">
+            <span id="status-tag" class="tag is-medium is-warning">Iniciando</span>
+          </p>
+
+          <p class="heading">Avaliação</p>
+          <p id="evaluation-value" class="title is-4 mb-2">0.00</p>
+          <progress id="evaluation-bar" class="progress is-small is-dark" value="50" max="100">50%</progress>
+          <p id="evaluation-detail" class="is-size-7 has-text-grey">&nbsp;</p>
+
+          <div class="field mt-5">
+            <label class="label" for="level">Nível</label>
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select id="level">
+                  <option value="1">Iniciante</option>
+                  <option value="2">Casual</option>
+                  <option value="3" selected>Clube</option>
+                  <option value="4">Forte</option>
+                  <option value="5">Máximo</option>
+                </select>
+              </div>
+            </div>
+            <p class="help">força e tempo de reflexão</p>
+          </div>
+
+          <div class="buttons has-addons mt-5">
+            <button id="restart" type="button" class="button is-dark">Nova partida</button>
+            <button id="sound" type="button" class="button">Som</button>
+          </div>
+
+          <p class="heading mt-5">Lances</p>
+          <div class="history">
+            <table class="table is-fullwidth is-narrow is-striped">
+              <tbody id="history"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <h2 class="title is-5">Como jogar</h2>
+
+      <div class="columns">
+        <div class="column content">
+          <h3 class="title is-6">Começando</h3>
+          <p>
+            Você é as brancas. Clique na peça e depois na casa que quer. Passando o
+            mouse em cima já dá pra ver os lances.
+          </p>
+        </div>
+
+        <div class="column content">
+          <h3 class="title is-6">Cores do tabuleiro</h3>
+          <p>
+            Círculo cinza é casa vazia, amarelo dá pra capturar, vermelho tem peça
+            sua no caminho. O dourado é o último lance.
+          </p>
+        </div>
+
+        <div class="column content">
+          <h3 class="title is-6">Avaliação e nível</h3>
+          <p>
+            A avaliação é do seu lado, então positivo é bom pra você.
+            <code>M3</code> é mate em 3. O nível mexe na força e no tempo que ele
+            pensa.
+          </p>
+        </div>
+
+        <div class="column content">
+          <h3 class="title is-6">Não implementei</h3>
+          <p>
+            Não tem roque nem en passant do seu lado, e ninguém avisa xeque-mate.
+            Lance que deixa seu rei em xeque não passa.
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+      <p class="is-size-7 has-text-grey">
+        <a href="https://github.com/mguinhos/chess-wasm">Código no GitHub</a>, feito com
+        PyScript, Pyodide e Stockfish (GPLv3).
+      </p>
+    </div>
+  </section>
+
+  <script type="module" src="https://pyscript.net/releases/2025.8.1/core.js"></script>
+  <script type="py" src="app/main.py" config="pyscript.toml"></script>
+</body>
+</html>

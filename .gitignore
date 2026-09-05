@@ -1,0 +1,6 @@
+build/
+.venv/
+__pycache__/
+*.pyc
+*.nnue
+.DS_Store

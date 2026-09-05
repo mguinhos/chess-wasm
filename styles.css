@@ -1,0 +1,72 @@
+:root {
+  --bulma-scheme-s: 0%;
+  --bulma-scheme-main-l: 11%;
+  --bulma-scheme-main-bis-l: 14%;
+  --bulma-scheme-main-ter-l: 17%;
+  --board-size: min(100%, 40rem);
+}
+
+.board {
+  position: relative;
+  aspect-ratio: 1;
+  max-width: var(--board-size);
+}
+
+#board {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.board-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bulma-scheme-main);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.board-overlay.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.history {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.history td {
+  font-family: monospace;
+}
+
+@media screen and (min-width: 769px) {
+  .board {
+    margin-left: calc((133.333% - var(--board-size)) / 2);
+    transition: margin-left 0.6s ease;
+  }
+
+  body[data-ready] .board {
+    margin-left: 0;
+  }
+
+  .panel-column {
+    opacity: 0;
+    transition: opacity 0.4s ease 0.3s;
+  }
+
+  body[data-ready] .panel-column {
+    opacity: 1;
+  }
+}
+
+py-terminal,
+.py-terminal {
+  display: none !important;
+}
